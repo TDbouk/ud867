@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:cardView="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:gravity="center_vertical"
     android:orientation="vertical"
     tools:context="tdbouk.udacity.com.jokedisplaylib.JokeActivity">
@@ -12,45 +13,59 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="5dp"
-        app:cardPreventCornerOverlap="true"
-        app:contentPadding="8dp">
+        cardView:cardBackgroundColor="#00f7eb"
+        cardView:cardCornerRadius="5dp"
+        cardView:cardElevation="5dp"
+        cardView:cardPreventCornerOverlap="true"
+        cardView:cardUseCompatPadding="true"
+        cardView:contentPadding="4dp">
 
-        <TextView
-            android:id="@+id/tv_joke_question"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="cursive"
-            android:padding="30dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/holo_red_light"
-            android:textStyle="bold" />
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/jokeHeaderStyle"
+                android:text="@string/question" />
+
+            <TextView
+                android:id="@+id/tv_joke_question"
+                style="@style/jokeTextStyle" />
+
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="30dp" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="5dp"
-        app:contentPadding="8dp">
+        cardView:cardBackgroundColor="#00f7eb"
+        cardView:cardCornerRadius="5dp"
+        cardView:cardElevation="5dp"
+        cardView:cardPreventCornerOverlap="true"
+        cardView:cardUseCompatPadding="true"
+        cardView:contentPadding="4dp">
 
-        <TextView
-            android:id="@+id/tv_joke_answer"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:padding="30dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/holo_red_dark" />
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/jokeHeaderStyle"
+                android:text="@string/answer" />
+
+            <TextView
+                android:id="@+id/tv_joke_answer"
+                style="@style/jokeTextStyle" />
+
+        </LinearLayout>
     </android.support.v7.widget.CardView>
-
-
 </LinearLayout>
