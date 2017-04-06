@@ -1,6 +1,5 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.example.toufik.myapplication.joketellerbackend.myApi.MyApi;
@@ -17,16 +16,13 @@ import java.io.IOException;
  * The class publishes an event via EventBus to the MainActivity which in return checks
  * whether the message is null or not and starts a new Activity to display the joke.
  */
-public class GetJokeFromBackEndTask extends AsyncTask<Context, Object,
+public class GetJokeFromBackEndTask extends AsyncTask<Void, Object,
         JokeHolder> {
 
     private static MyApi myApiService = null;
-    private Context mContext;
 
     @Override
-    protected JokeHolder doInBackground(Context... params) {
-
-        mContext = params[0];
+    protected JokeHolder doInBackground(Void... params) {
 
         if (myApiService == null) {  // Only do this once
           /*  MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
