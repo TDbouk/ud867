@@ -1,8 +1,6 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,16 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.toufik.myapplication.joketellerbackend.myApi.MyApi;
-import com.example.toufik.myapplication.joketellerbackend.myApi.model.JokeHolder;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.io.IOException;
 
 import tdbouk.udacity.com.jokedisplaylib.JokeActivity;
 
@@ -84,50 +75,6 @@ public class MainActivity extends AppCompatActivity {
             Snackbar.make(findViewById(R.id.fragment), R.string.error_backend,
                     Snackbar.LENGTH_SHORT).show();
         }
-    }
-}
-
-
-class GetJokeFromBackEndTask extends AsyncTask<Context, Object,
-        com.example.toufik.myapplication.joketellerbackend.myApi.model.JokeHolder> {
-
-    private static MyApi myApiService = null;
-    private Context mContext;
-
-    @Override
-    protected com.example.toufik.myapplication.joketellerbackend.myApi.model.JokeHolder doInBackground(Context... params) {
-
-        mContext = params[0];
-
-        if (myApiService == null) {  // Only do this once
-          /*  MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
-                    new AndroidJsonFactory(), null)
-                    .setRootUrl("http://192.168.0.120:8080/_ah/api/")
-                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                        @Override
-                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                            abstractGoogleClientRequest.setDisableGZipContent(true);
-                        }
-                    });*/
-            MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                    .setRootUrl("https://joketeller-163721.appspot.com/_ah/api/");
-
-            myApiService = builder.build();
-        }
-
-        try {
-            return myApiService.sayJoke().execute().getData();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(JokeHolder jokeHolder) {
-        super.onPostExecute(jokeHolder);
-        // Post event to the UI thread
-        EventBus.getDefault().post(new JokeEvent(jokeHolder));
     }
 }
 
