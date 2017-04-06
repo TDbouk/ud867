@@ -1,5 +1,6 @@
 package com.udacity.gradle.builditbigger;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
 import com.example.toufik.myapplication.joketellerbackend.myApi.MyApi;
@@ -19,7 +20,20 @@ import java.io.IOException;
 public class GetJokeFromBackEndTask extends AsyncTask<Void, Object,
         JokeHolder> {
 
+    ProgressDialog progressDialog;
     private static MyApi myApiService = null;
+
+    public GetJokeFromBackEndTask(ProgressDialog progressDialog) {
+        this.progressDialog = progressDialog;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setMessage("Fetching Joke...");
+        progressDialog.show();
+    }
 
     @Override
     protected JokeHolder doInBackground(Void... params) {
@@ -49,8 +63,24 @@ public class GetJokeFromBackEndTask extends AsyncTask<Void, Object,
     }
 
     @Override
+    protected void onCancelled() {
+        // stop progress dialog
+        if (progressDialog != null && progressDialog.isShowing()) {
+//            progressDialog.dismiss();
+            progressDialog = null;
+        }
+        super.onCancelled();
+    }
+
+    @Override
     protected void onPostExecute(JokeHolder jokeHolder) {
         super.onPostExecute(jokeHolder);
+
+        // stop progress dialog
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+
         // Post event to the UI thread
         EventBus.getDefault().post(new JokeEvent(jokeHolder));
     }

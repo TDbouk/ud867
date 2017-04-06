@@ -1,6 +1,10 @@
 package com.udacity.gradle.builditbigger;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +21,9 @@ import tdbouk.udacity.com.jokedisplaylib.JokeActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    private GetJokeFromBackEndTask getJokeFromBackEndTask;
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -26,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         EventBus.getDefault().unregister(this);
+        if (getJokeFromBackEndTask != null)
+            getJokeFromBackEndTask.cancel(true);
+        if (progressDialog != null)
+            progressDialog.dismiss();
         super.onStop();
     }
 
@@ -58,8 +69,43 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean checkInternetConnection() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+    }
+
+/*
+    private boolean checkNetworkConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+                // connected to wifi
+                return true;
+            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+                // connected to the mobile provider's data plan
+                return true;
+            }
+        } else {
+            // not connected to the internet
+            return false;
+        }
+        return true;
+    }
+*/
+
     public void tellJoke(View view) {
-        new GetJokeFromBackEndTask().execute();
+        if (checkInternetConnection()) {
+            progressDialog = new ProgressDialog(MainActivity.this);
+            getJokeFromBackEndTask = new GetJokeFromBackEndTask(progressDialog);
+            getJokeFromBackEndTask.execute();
+        } else {
+            Snackbar.make(findViewById(R.id.fragment), R.string.error_no_internet, Snackbar.LENGTH_SHORT);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
