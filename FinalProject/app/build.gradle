@@ -33,4 +33,5 @@ dependencies {
     compile 'com.google.http-client:google-http-client-android:1.22.0'
     compile 'com.google.code.findbugs:jsr305:2.0.1'
     compile project(path: ':joketellerbackend', configuration: 'android-endpoints')
+    compile 'org.greenrobot:eventbus:3.0.0'
 }

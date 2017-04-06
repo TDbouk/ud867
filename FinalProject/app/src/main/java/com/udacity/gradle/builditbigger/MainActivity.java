@@ -15,12 +15,28 @@ import com.example.toufik.myapplication.joketellerbackend.myApi.model.JokeHolder
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 
 import tdbouk.udacity.com.jokedisplaylib.JokeActivity;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +69,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void tellJoke(View view) {
         new GetJokeFromBackEndTask().execute(MainActivity.this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(JokeEvent event) {
+
+        com.example.toufik.myapplication.joketellerbackend.myApi.model.JokeHolder jokeHolder = event.jokeHolder;
+        if (jokeHolder != null) {
+            Intent displayJokeIntent = new Intent(this, JokeActivity.class);
+            displayJokeIntent.putExtra(JokeActivity.EXTRA_JOKE_QUESTION, jokeHolder.getQuestion());
+            displayJokeIntent.putExtra(JokeActivity.EXTRA_JOKE_ANSWER, jokeHolder.getAnswer());
+            startActivity(displayJokeIntent);
+        } else {
+            Snackbar.make(findViewById(R.id.fragment), R.string.error_backend,
+                    Snackbar.LENGTH_SHORT).show();
+        }
     }
 }
 
@@ -95,15 +126,9 @@ class GetJokeFromBackEndTask extends AsyncTask<Context, Object,
     @Override
     protected void onPostExecute(JokeHolder jokeHolder) {
         super.onPostExecute(jokeHolder);
-
-        if (jokeHolder != null) {
-            Intent displayJokeIntent = new Intent(mContext, JokeActivity.class);
-            displayJokeIntent.putExtra(JokeActivity.EXTRA_JOKE_QUESTION, jokeHolder.getQuestion());
-            displayJokeIntent.putExtra(JokeActivity.EXTRA_JOKE_ANSWER, jokeHolder.getAnswer());
-            mContext.startActivity(displayJokeIntent);
-        } else {
-            Snackbar.make(((MainActivity) mContext).findViewById(R.id.fragment), R.string.error_backend,
-                    Snackbar.LENGTH_SHORT).show();
-        }
+        // Post event to the UI thread
+        EventBus.getDefault().post(new JokeEvent(jokeHolder));
     }
 }
+
+
