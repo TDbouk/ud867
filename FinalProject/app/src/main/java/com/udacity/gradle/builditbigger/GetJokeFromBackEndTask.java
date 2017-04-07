@@ -7,6 +7,8 @@ import com.example.toufik.myapplication.joketellerbackend.myApi.MyApi;
 import com.example.toufik.myapplication.joketellerbackend.myApi.model.JokeHolder;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -30,16 +32,18 @@ public class GetJokeFromBackEndTask extends AsyncTask<Void, Object,
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog.setTitle("Please Wait");
-        progressDialog.setMessage("Fetching Joke...");
-        progressDialog.show();
+        if (progressDialog != null) {
+            progressDialog.setTitle("Please Wait");
+            progressDialog.setMessage("Fetching Joke...");
+            progressDialog.show();
+        }
     }
 
     @Override
     protected JokeHolder doInBackground(Void... params) {
 
         if (myApiService == null) {  // Only do this once
-          /*  MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
+            MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
                     .setRootUrl("http://192.168.0.120:8080/_ah/api/")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
@@ -47,9 +51,11 @@ public class GetJokeFromBackEndTask extends AsyncTask<Void, Object,
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
                             abstractGoogleClientRequest.setDisableGZipContent(true);
                         }
-                    });*/
+                    });
+/*
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                    .setRootUrl("https://joketeller-163721.appspot.com/_ah/api/");
+                    .setRootUrl("myDeployedBackEnd.appspot.com/_ah/api/");
+*/
 
             myApiService = builder.build();
         }

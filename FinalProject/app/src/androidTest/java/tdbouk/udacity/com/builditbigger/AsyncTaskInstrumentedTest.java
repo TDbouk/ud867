@@ -10,7 +10,6 @@ import com.udacity.gradle.builditbigger.GetJokeFromBackEndTask;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -25,11 +24,8 @@ public class AsyncTaskInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        // test for the package name
-        assertEquals("com.udacity.gradle.builditbigger", appContext.getPackageName());
-
         // test if GetJokeFromBackEndTask is retrieving a joke or not
-        JokeHolder jh = new GetJokeFromBackEndTask().execute().get();
+        JokeHolder jh = new GetJokeFromBackEndTask(null).execute().get();
         assertTrue("joke is null", jh != null);
     }
 }
