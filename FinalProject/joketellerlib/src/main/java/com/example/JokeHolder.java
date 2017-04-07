@@ -1,7 +1,7 @@
 package com.example;
 
 /**
- * Created by toufik on 4/5/2017.
+ * A class that represents a jokes details: question and answer.
  */
 
 public class JokeHolder {

@@ -25,6 +25,11 @@ import com.google.api.server.spi.config.ApiNamespace;
 )
 public class MyEndpoint {
 
+    /**
+     * A method that grabs a joke from the {@link Joke} class
+     *
+     * @return {@link com.example.toufik.myapplication.joketellerbackend.myApi.model.JokeHolder} object.
+     */
     @ApiMethod(name = "sayJoke")
     public MyBean sayJoke() {
         Joke jokeTeller = new Joke();

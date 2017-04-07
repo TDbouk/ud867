@@ -15,11 +15,14 @@ public class JokeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_joke);
 
+        // reference widgets in layout
         TextView question = (TextView) findViewById(R.id.tv_joke_question);
         TextView answer = (TextView) findViewById(R.id.tv_joke_answer);
 
+        // get calling intent
         Intent parentIntent = getIntent();
 
+        // set data to views in layout
         if (parentIntent != null) {
 
             if (parentIntent.hasExtra(EXTRA_JOKE_QUESTION)) {

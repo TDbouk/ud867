@@ -3,6 +3,9 @@ package com.example;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * A class to hold the jokes in an {@link ArrayList<JokeHolder>} list.
+ */
 public class Joke {
 
     private ArrayList<JokeHolder> jokes = new ArrayList<>();
@@ -11,6 +14,9 @@ public class Joke {
         init();
     }
 
+    /**
+     * Initialize jokes
+     */
     private void init() {
         JokeHolder holder;
 
@@ -45,11 +51,21 @@ public class Joke {
         jokes.add(holder);
     }
 
+    /**
+     * Randoms an integer representing location of joke in the list
+     *
+     * @return <code>Integer</code>: joke index in list
+     */
     private int randomJoke() {
         Random rand = new Random();
         return rand.nextInt(100) % jokes.size();
     }
 
+    /**
+     * A method that gets a random joke
+     *
+     * @return {@link JokeHolder} object
+     */
     public JokeHolder getJoke() {
         return jokes.get(randomJoke());
     }

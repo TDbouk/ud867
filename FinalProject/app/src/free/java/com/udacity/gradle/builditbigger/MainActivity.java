@@ -84,14 +84,22 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Load interstitial Ad.
+     */
     private void requestNewInterstitial() {
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("62E780050CAFA1442D2EA394EF7323B5")
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
 
         mInterstitialAd.loadAd(adRequest);
     }
 
+    /**
+     * A helper method to check if an internet connection is available.
+     *
+     * @return <code>false</code> if internet connection is not available
+     */
     private boolean checkInternetConnection() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -101,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
                 activeNetwork.isConnectedOrConnecting();
     }
 
+    /**
+     * A method to fetch a joke from the GCE module if internet connection is available
+     * using {@link GetJokeFromBackEndTask}.
+     */
     private void showJoke() {
 
         if (checkInternetConnection()) {
@@ -112,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Handles on click events
+     *
+     * @param view
+     */
     public void tellJoke(View view) {
 
         if (mInterstitialAd.isLoaded()) {
@@ -121,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Subscribe to the event in order to receive it when posted
+     *
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(JokeEvent event) {
 

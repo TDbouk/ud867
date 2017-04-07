@@ -1,7 +1,5 @@
 package tdbouk.udacity.com.builditbigger;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.example.toufik.myapplication.joketellerbackend.myApi.model.JokeHolder;
@@ -14,15 +12,13 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Instrumentation test, which will execute on an Android device.
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * This test tests fetching data from server via AsyncTask.
+ * The test fails if the task returns null.
  */
 @RunWith(AndroidJUnit4.class)
 public class AsyncTaskInstrumentedTest {
     @Test
     public void useAppContext() throws Exception {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
 
         // test if GetJokeFromBackEndTask is retrieving a joke or not
         JokeHolder jh = new GetJokeFromBackEndTask(null).execute().get();

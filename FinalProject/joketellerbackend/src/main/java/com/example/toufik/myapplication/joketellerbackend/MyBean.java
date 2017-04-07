@@ -3,7 +3,8 @@ package com.example.toufik.myapplication.joketellerbackend;
 import com.example.JokeHolder;
 
 /**
- * The object model for the data we are sending through endpoints
+ * The object model for the data we are sending through endpoints.
+ * It holds a {@link JokeHolder} object containing the joke.
  */
 public class MyBean {
 
